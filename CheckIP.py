@@ -41,7 +41,7 @@ def get_ip_check_request():
     apiData = urllib2.urlopen("http://220.180.227.52:45654/getiplist")
     apiDic = eval(apiData.read())
     for addressObj in apiDic:
-        check_ip_request(addressObj['ip'])
+        check_ip_request(addressObj['ip'],11,12)
 
 
 def check_ip_request(proxyIP,startID,endID):
@@ -107,14 +107,17 @@ for i in range(1,2):
 '''
 #check_ip_ping()
 #get_ip_check_request()
-proxyList = get_proxy_list("http://192.168.0.37:8000")
-for proxy in proxyList :
-    #proxySql.db_init()
-    #proxySql.insert_data(proxy)
-    print proxy
-    try:
-        check_ip_no_auth(proxy)
-    except:
-        continue
+# proxyList = get_proxy_list("http://192.168.0.37:8000")
+# for proxy in proxyList :
+#     #proxySql.db_init()
+#     #proxySql.insert_data(proxy)
+#     print proxy
+#     try:
+#         check_ip_no_auth(proxy)
+#     except:
+#         continue
 
-
+#get_ip_check_request()
+#dic = get_proxy_list('http://220.180.227.52:45654/getiplist')
+#for obj in dic:
+check_ip_request('223.240.255.168',11,30)
