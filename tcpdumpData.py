@@ -17,6 +17,7 @@
 # more details.
 
 # python imports
+import re
 import os
 import sys
 import dpkt
@@ -715,17 +716,47 @@ class PcapInfo():
             tcp = ip.data
             try:
                 ht = tcp.data
-                http = dpkt.http.Response(ht)
+                print type(tcp)
+                file = open(ts + '.html', "wb")
+                file.write(ht)
+                #print tcp.data
+                if tcp.dport == 80 and len(tcp.data) > 0:
+                    print 'dd'
+                    ht = tcp.data
+                    file = open(ts+'.html',"wb")
+                    file.write(ht)
+                    file.close()
+                    print ht
+                    http = dpkt.http.Response(ht)
+                    http.body
+                    print "HTTP version is ", http.version
+            except:
+                    pass
+
+            # print response.status
+
+            #body = dpkt.http.parse_body(self.packets,request.headers)
+            #print body
+            try:
+                #print tcp.data
+                ht = tcp.data
+                request = dpkt.http.Request(ht)
+                response = dpkt.http.Response(ht)
+                print response.data
+                if re.search('www.xsqnb.com',request.uri):
+                    #print request.uri
+                    #print tcp.dport
+                    response = dpkt.http.Response(ht)
+                    #print response.body
                 #print type(http.status.encode('unicode-escape').decode('string_escape'))
-                if http.status.encode('unicode-escape').decode('string_escape')=='200':
-                    print http.body
-                    exit()
-                #print http.body
+                if response.status.encode('unicode-escape').decode('string_escape')=='200':
+                    pass
+                    #print response.body
+                    # exit()
             except:
                 continue
             #print  tcp.dport
             if tcp.dport==80:
-
              #   print dpkt.http.Response.body
                 exit()
             # if tcp.sport == 3128 and len(tcp.data) > 0:

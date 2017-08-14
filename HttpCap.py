@@ -3,13 +3,14 @@
 import pcap
 import dpkt
 
-cap = pcap.pcap('eth0')
+cap = pcap.pcap('enp2s0')
 cap.setfilter('tcp port 80')
 files4out = {}
 url = 'www.baidu.com'
 
 for ptime, pktdata in cap:
     pkt = dpkt.ethernet.Ethernet(pktdata)
+
     if pkt.data.data.__class__.__name__ <> 'TCP':
         continue
     ipsrc_tag = 0
@@ -24,7 +25,28 @@ for ptime, pktdata in cap:
     tcpdata = pkt.data.data
     sport = tcpdata.sport
     dport = tcpdata.dport
+    try:
+        ht = tcpdata.data
+        print ht
+        #file = open(str(ptime)+'.html', "wb")
+        #file.write(ht)
+        request = dpkt.http.Request(ht)
+        #print request.uri
+        #print request.method
+        respone = dpkt.http.Response(ht)
+        print respone.entity_body
+        print respone.status
 
+    except dpkt.dpkt.UnpackError :
+        print "Encounted an unpacking error"
+
+
+    if dport == 80:
+        #print ht
+        pass
+        #dpkt.http.Response.
+        #http = dpkt.http.Request(ht)
+        #print http.body
     src_tag = sip
     dst_tag = dip
     sp_tag = str(sport)
@@ -67,10 +89,10 @@ for ptime, pktdata in cap:
                 dipi = '%d.%d.%d.%d' % tuple(map(ord, list(ipdatai.dst)))
                 sporti = tcpdatai.sport
                 dporti = tcpdatai.dport
-                print '[datai]' + sipi + ':' + str(sporti) + '-' + dipi + ':' + str(dporti)
+                #print '[datai]' + sipi + ':' + str(sporti) + '-' + dipi + ':' + str(dporti)
             item[1] = -1
 
-            print '[data]' + sip + ':' + str(sport) + '-' + dip + ':' + str(dport)
+            #print '[data]' + sip + ':' + str(sport) + '-' + dip + ':' + str(dport)
         else:
             pass
             # 这里优化空间巨大！

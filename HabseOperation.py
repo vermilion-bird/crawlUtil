@@ -16,9 +16,15 @@ class HabseHelp():
         contents = ColumnDescriptor(name='cf:', maxVersions=1)
         self.client.createTable('test_b', [contents])
         print self.client.getTableNames()
-    def insert(self):
-        row = 'row-key1'
-        mutations = [Mutation(column="cf:a", value="1")]
+    def insert(self,dic_list,row):
+        mutations=[]
+        for i in range(len(dic_list)):
+            for (k,v) in dic_list[i].items():
+                print k+':'+v
+                mu=Mutation(column='cf:'+k,value=v)
+                mutations.append(mu)
+        #print mutations
+        #mutations = [Mutation(column='cf:c', value='value')]
         self.client.mutateRow('test_b', row, mutations)
     def update(self):
         pass
@@ -41,6 +47,6 @@ if __name__ == '__main__':
     hb=HabseHelp()
     hb.__init__()
     #hb.createTable()
-    hb.insert()
-    hb.query_many()
+    hb.insert([{'asdw':'sdw2'},{'dsad':'www'},{'555':'666'}],'thasdsa')
+    #hb.query_many()
     pass
