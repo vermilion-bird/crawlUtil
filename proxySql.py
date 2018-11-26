@@ -1,10 +1,10 @@
 import MySQLdb
 
 class proxySql(object):
-    dbUrl = '112.124.118.42'
-    dbUser = 'ipdatabase'
-    dbPwd = 'ipdatabase'
-    dataName = 'ipdatabasenew'
+    dbUrl = '*'
+    dbUser = '*'
+    dbPwd = '*'
+    dataName = '*'
     def db_init(self):
         self.db = MySQLdb.connect(self.dbUrl, self.dbUser, self.dbPwd, self.dataName)
         return self.db
